@@ -4,6 +4,7 @@ import { Token } from './token.entity';
 import { retry } from 'rxjs';
 import { UsuarioService } from 'src/usuario/usuario.service';
 import { AuthService } from 'src/auth/auth.service';
+import { Usuario } from 'src/usuario/usuario.entity';
 
 @Injectable()
 export class TokenService {
@@ -40,6 +41,18 @@ export class TokenService {
             return new HttpException({
                 errorMessage: "Token inválido",
             }, HttpStatus.UNAUTHORIZED)
+        }
+    }
+
+    async getUsuarioToken(token: string): Promise<Usuario> {
+        token = token.replace("Bearer ", "").trim()
+        let objectToken: Token = await this.tokenRepository.findOne({ where: { hash: token } })
+        if (objectToken && token != null) {
+            let usuario = await this.usuarioService.findOne(objectToken.username)
+            return usuario
+        }
+        else {
+            return null
         }
     }
 }

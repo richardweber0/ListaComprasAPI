@@ -28,6 +28,11 @@ export class UsuarioController {
     @UseGuards(AuthGuard('local'))
     @Post('login')
     async login(@Request() req) {
-      return this.authService.login(req.user);    
+        return this.authService.login(req.user);
+    }
+
+    @Post('login-token')
+    async loginToken(@Request() req, @Body() data) {
+        return this.authService.loginToken(data.token);
     }
 }
