@@ -12,9 +12,6 @@ export class Item {
     @Column({ length: 255 })
     descricao: string;
 
-    @Column({})
-    quantidade: number;
-
     @ManyToOne(() => Usuario, usuario => usuario.items)
     usuario: Usuario
 }
